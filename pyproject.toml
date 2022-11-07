@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "dataasset"
+version = "0.1.0"
+description = ""
+authors = ["c-jamie <jamie.b.clery@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+psycopg2 = { version = "^2.9", optional = true }
+SQLAlchemy = { version = "^1.4", optional = true }
+sqlalchemy-json = { version = "^0.5", optional = true }
+alembic = { version = "^1.8", optional = true }
+pymysql = { version = "^1.0", optional = true }
+pyodbc = { version = "^4.0.34", optional = true }
+
+[tool.poetry.extras]
+postgres = ["psycopg2", "sqlalchemy-json", "SQLAlchemy", "alembic"]
+mysql = ["sqlalchemy-json", "SQLAlchemy", "alembic", "pymysql"]
+mssql = ["sqlalchemy-json", "SQLAlchemy", "alembic", "pyodbc"]
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0"
+pytest-cov = "^4.0.0"
+black = "^22.10.0"
+isort = "^5.10.1"
+flake8 = "^5.0.4"
+bandit = "^1.7.4"
+safety = "^2.3.1"
+pyfakefs = "^5.0.0"
+pandas = "^1.5.1"
+python-dotenv = "^0.21.0"
+ipython = "^8.5.0"
+githubrelease = "^1.5.9"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dataasset = "dataasset.application:main"

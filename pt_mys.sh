@@ -1,0 +1,1 @@
+poetry run pytest --url=mysql+pymysql://root:mysql@localhost:3306/dataasset

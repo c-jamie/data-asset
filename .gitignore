@@ -1,0 +1,6 @@
+dist/
+tests/d.csv
+tests/__pycache__
+dataasset/__pycache__
+tests/.pytest_cache
+__pycache__

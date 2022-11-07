@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    tags:        
+      - '*' 
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DATABASE: dataasset
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry        
+
+    - name: Run tests
+      run: |
+        poetry install --extras "postgres"
+        poetry run pytest --url postgresql://postgres:postgres@127.0.0.1:5432/dataasset -s
+
+    - name: Build and publish
+      run: |
+        poetry version $(git describe --tags --abbrev=0)
+        poetry build
+        poetry publish --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}
+
+    - name: Github Release
+      run: |
+        pip install githubrelease
+        githubrelease \
+        --github-token ${{ secrets.GH_TOKEN }} \
+        release c-jamie/mvds-da create $(git describe --tags --abbrev=0) \
+        --name "dataasset v$(git describe --tags --abbrev=0)" \
+        --publish "dist/*"

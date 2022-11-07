@@ -1,0 +1,1 @@
+docker compose exec app-test-postgres $@
