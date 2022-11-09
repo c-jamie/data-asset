@@ -54,6 +54,6 @@ jobs:
         pip install githubrelease
         githubrelease \
         --github-token ${{ secrets.GH_TOKEN }} \
-        release c-jamie/mvds-da create $(git describe --tags --abbrev=0) \
+        release c-jamie/data-asset create $(git describe --tags --abbrev=0) \
         --name "dataasset v$(git describe --tags --abbrev=0)" \
         --publish "dist/*"
